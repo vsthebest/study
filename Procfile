@@ -1,2 +1,2 @@
-worker: python discode_bot.py
-web: python discode_bot.py
+worker: python discord_bot.py
+web: python discord_bot.py
