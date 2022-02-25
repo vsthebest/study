@@ -69,4 +69,4 @@ async def team(ctx):
 
 
 
-bot.run('OTQ2NjM1OTIyNjg5MTE0MjEy.YhhlZw.SZIwQEmQjJ65rah0vRZRenJkRUI')
+bot.run(OTQ2NjM1OTIyNjg5MTE0MjEy.YhhlZw.SZIwQEmQjJ65rah0vRZRenJkRUI)
