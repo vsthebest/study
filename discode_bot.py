@@ -8,7 +8,7 @@ from discord.ext import commands
 롤  : 포지션정하기, 티어보기 
 '''
 
-token = "OTQ2NjM1OTIyNjg5MTE0MjEy.YhhlZw.uEcJAaZ2nyjNgi4i4dmEKyA9GIM"
+token = "OTQ2NjM1OTIyNjg5MTE0MjEy.YhhlZw.SZIwQEmQjJ65rah0vRZRenJkRUI"
 
 comment = discord.Game("!명령어 - 명령어확인")
 bot = commands.Bot(command_prefix="!", status=discord.Status.online, activity=comment)
