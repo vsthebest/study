@@ -28,6 +28,7 @@ pyinstaller==4.5.1
 pyinstaller-hooks-contrib==2021.2
 PyMySQL==1.0.2
 python-dateutil==2.8.2
+python-dotenv==0.19.2
 pytz==2021.1
 pywin32-ctypes==0.2.0
 requests==2.27.1
