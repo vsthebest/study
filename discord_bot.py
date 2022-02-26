@@ -9,8 +9,7 @@ from discord.ext import commands
 롤  : 포지션정하기, 티어보기 
 '''
 
-#token = "OTQ2NjM1OTIyNjg5MTE0MjEy.YhhlZw.aQGp7dMt-po_6NTTb8kDIP6TGJs"
-token = open("token", "r").readline()
+token = os.environ.get('BOT_TOKEN')
 
 comment = discord.Game("!명령어 - 명령어확인")
 bot = commands.Bot(command_prefix="!", status=discord.Status.online, activity=comment)
