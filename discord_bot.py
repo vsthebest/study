@@ -3,12 +3,14 @@ import asyncio
 import random
 import os
 from discord.ext import commands
+from dotenv import load_dotenv
 
 '''
 배그: *팀짜기, 티어보기
 롤  : 포지션정하기, 티어보기 
 '''
 
+load_dotenv()
 token = os.environ.get('BOT_TOKEN')
 
 comment = discord.Game("!명령어 - 명령어확인")
