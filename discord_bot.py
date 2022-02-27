@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 '''
 
 load_dotenv()
-token = os.getenv('BOT_TOKEN')
+token = os.getenv('BOT_TOKKEN')
 
 comment = discord.Game("!명령어 - 명령어확인")
 bot = commands.Bot(command_prefix="!", status=discord.Status.online, activity=comment)
