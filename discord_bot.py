@@ -6,6 +6,7 @@ import requests
 import json
 from discord.ext import commands
 from dotenv import load_dotenv
+from PIL import Image, ImageDraw, ImageFont
 
 '''
 배그: *팀짜기, 티어보기
