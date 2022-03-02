@@ -107,7 +107,7 @@ async def stats(ctx, arg1):
 
 
     ## 이번시즌 일반 종합 ##
-    url = "https://api.pubg.com/shards/"+combo1.get()+"/players/"+playerID+"/seasons/"+seasonID
+    url = "https://api.pubg.com/shards/"+platform+"/players/"+playerID+"/seasons/"+seasonID
     req = requests.get(url, headers=header)
     json_normal = json.loads(req.text)
 
