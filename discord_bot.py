@@ -78,7 +78,7 @@ async def stats(ctx, arg1):
     playerID = os.getenv('EY_KAKAO')
     
     url = "https://api.pubg.com/shards/kakao/seasons"
-    header = { "Authorization": os.getenv('AUTHORIZATION')
+    header = { "Authorization": os.getenv('AUTHORIZATION'),
               "Accept": "application/vnd.api+json" }
     
     req = requests.get(url, headers=header)
