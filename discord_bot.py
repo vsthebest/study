@@ -77,6 +77,7 @@ async def team(ctx):
 async def stats(ctx, arg1):
     platform = "kakao"
     playerID = os.getenv('EY_KAKAO')
+    name = "IDC_Kakabenzema"
     
     url = "https://api.pubg.com/shards/kakao/seasons"
     header = { "Authorization": os.getenv('AUTHORIZATION'),
