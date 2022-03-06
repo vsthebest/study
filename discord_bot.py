@@ -156,7 +156,7 @@ async def stats(ctx, arg1):
             req = requests.get(url, headers=header)
             json_rank = json.loads(req.text)
 
-            if 'squad' in json_r['data']['attributes']['rankedGameModeStats']:
+            if 'squad' in json_rank['data']['attributes']['rankedGameModeStats']:
                 if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
                     tier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['tier']
                     subtier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['subTier']
