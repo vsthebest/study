@@ -168,6 +168,5 @@ async def stats(ctx, arg1):
         result = discord.File(fp=image_binary, filename="image.png")
         await ctx.send(file=result)
     
-    await ctx.send(out)
     
 bot.run(token)
