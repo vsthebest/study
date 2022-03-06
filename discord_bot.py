@@ -7,6 +7,7 @@ import json
 from discord.ext import commands
 from dotenv import load_dotenv
 from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
 
 '''
 배그: *팀짜기, 티어보기
@@ -160,6 +161,12 @@ async def stats(ctx, arg1):
     
     out = Image.alpha_composite(background, txt)
     out.paste(tier_img, (200,30), tier_img)
+    
+    with BytesIO() as image_binary:
+        out.save(image_binary, "png")
+        image_binary.seek(0)
+        result = discord.File(fp=image_binary, filename="image.png")
+        await ctx.send(file=result)
     
     await ctx.send(out)
     
