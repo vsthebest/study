@@ -129,56 +129,56 @@ async def stats(ctx, arg1):
     
     if next == 1:
         for num in range(len(platform)):
-        url = "https://api.pubg.com/shards/"+platform[num]+"/seasons"
-        header = { "Authorization": os.getenv('AUTHORIZATION'),
-                  "Accept": "application/vnd.api+json" }
+            url = "https://api.pubg.com/shards/"+platform[num]+"/seasons"
+            header = { "Authorization": os.getenv('AUTHORIZATION'),
+                      "Accept": "application/vnd.api+json" }
 
-        req = requests.get(url, headers=header)
-        json_season = json.loads(req.text)
+            req = requests.get(url, headers=header)
+            json_season = json.loads(req.text)
 
-        for i in range(len(json_season['data'])):
-            if json_season['data'][i]['attributes']['isCurrentSeason'] == True and json_season['data'][i]['attributes']['isOffseason'] == False:
-                seasonID = json_season['data'][i]['id']
-                break
+            for i in range(len(json_season['data'])):
+                if json_season['data'][i]['attributes']['isCurrentSeason'] == True and json_season['data'][i]['attributes']['isOffseason'] == False:
+                    seasonID = json_season['data'][i]['id']
+                    break
 
-        url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID+"/ranked"
-        req = requests.get(url, headers=header)
-        json_rank = json.loads(req.text)
+            url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID+"/ranked"
+            req = requests.get(url, headers=header)
+            json_rank = json.loads(req.text)
 
-        if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
-            tier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['tier']
-            subtier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['subTier']
-            point = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']
-            higher = platform[num]
+            if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
+                tier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['tier']
+                subtier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['subTier']
+                point = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']
+                higher = platform[num]
 
-            KDA = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kda']
-            
-        rank_games = json_rank['data']['attributes']['rankedGameModeStats']['squad']['roundsPlayed']
-        rank_Dealt = json_rank['data']['attributes']['rankedGameModeStats']['squad']['damageDealt']
-        rank_kills = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kills']
-        rank_assist = json_rank['data']['attributes']['rankedGameModeStats']['squad']['assists']
-        rank_chicken = json_rank['data']['attributes']['rankedGameModeStats']['squad']['wins']
-        rank_top10s = round(json_rank['data']['attributes']['rankedGameModeStats']['squad']['top10Ratio'] * rank_games)
+                KDA = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kda']
+
+            rank_games = json_rank['data']['attributes']['rankedGameModeStats']['squad']['roundsPlayed']
+            rank_Dealt = json_rank['data']['attributes']['rankedGameModeStats']['squad']['damageDealt']
+            rank_kills = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kills']
+            rank_assist = json_rank['data']['attributes']['rankedGameModeStats']['squad']['assists']
+            rank_chicken = json_rank['data']['attributes']['rankedGameModeStats']['squad']['wins']
+            rank_top10s = round(json_rank['data']['attributes']['rankedGameModeStats']['squad']['top10Ratio'] * rank_games)
 
 
-        ## 이번시즌 일반 종합 ##
-        url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID
-        req = requests.get(url, headers=header)
-        json_normal = json.loads(req.text)
+            ## 이번시즌 일반 종합 ##
+            url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID
+            req = requests.get(url, headers=header)
+            json_normal = json.loads(req.text)
 
-        normal_games = json_normal['data']['attributes']['gameModeStats']['squad']['roundsPlayed']
-        normal_dealt = json_normal['data']['attributes']['gameModeStats']['squad']['damageDealt']
-        normal_kills = json_normal['data']['attributes']['gameModeStats']['squad']['kills']
-        normal_assist = json_normal['data']['attributes']['gameModeStats']['squad']['assists']
-        normal_chicken = json_normal['data']['attributes']['gameModeStats']['squad']['wins']
-        normal_top10s = json_normal['data']['attributes']['gameModeStats']['squad']['top10s']
+            normal_games = json_normal['data']['attributes']['gameModeStats']['squad']['roundsPlayed']
+            normal_dealt = json_normal['data']['attributes']['gameModeStats']['squad']['damageDealt']
+            normal_kills = json_normal['data']['attributes']['gameModeStats']['squad']['kills']
+            normal_assist = json_normal['data']['attributes']['gameModeStats']['squad']['assists']
+            normal_chicken = json_normal['data']['attributes']['gameModeStats']['squad']['wins']
+            normal_top10s = json_normal['data']['attributes']['gameModeStats']['squad']['top10s']
 
-        total_games = total_games + rank_games + normal_games
-        total_dealt = total_dealt + round((rank_Dealt + normal_dealt) / total_games)
-        total_kills = total_kills + round((rank_kills + normal_kills) / total_games, 1)
-        total_assist = total_assist + round((rank_assist + normal_assist) / total_games, 1)
-        total_chicken = total_chicken + rank_chicken + normal_chicken
-        total_top10s = total_top10s + round((rank_top10s + normal_top10s) / total_games * 100)
+            total_games = total_games + rank_games + normal_games
+            total_dealt = total_dealt + round((rank_Dealt + normal_dealt) / total_games)
+            total_kills = total_kills + round((rank_kills + normal_kills) / total_games, 1)
+            total_assist = total_assist + round((rank_assist + normal_assist) / total_games, 1)
+            total_chicken = total_chicken + rank_chicken + normal_chicken
+            total_top10s = total_top10s + round((rank_top10s + normal_top10s) / total_games * 100)
 
         background = Image.open("back.jpg").convert("RGBA")
         txt = Image.new("RGBA", background.size, (255,255,255,0))
