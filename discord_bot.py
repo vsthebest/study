@@ -89,6 +89,17 @@ async def stats(ctx, arg1):
     total_chicken = 0
     total_top10s = 0
     
+    rank_games = 0
+    rank_Dealt = 0
+    rank_kills = 0
+    rank_assist = 0
+    rank_chicken = 0
+    rank_top10s = 0
+    
+    tier = ""
+    subtier = 0
+    higher = ""
+    
     if arg1 == "은영":
         playerID.append(os.getenv('EY_KAKAO'))
         playerID.append(os.getenv('EY_STEAM'))
@@ -145,21 +156,22 @@ async def stats(ctx, arg1):
             req = requests.get(url, headers=header)
             json_rank = json.loads(req.text)
 
-            if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
-                tier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['tier']
-                subtier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['subTier']
-                point = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']
-                higher = platform[num]
+            if 'squad' in json_r['data']['attributes']['rankedGameModeStats']:
+                if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
+                    tier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['tier']
+                    subtier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['subTier']
+                    point = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']
+                    higher = platform[num]
 
-                KDA = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kda']
+                    KDA = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kda']
 
-            rank_games = json_rank['data']['attributes']['rankedGameModeStats']['squad']['roundsPlayed']
-            rank_Dealt = json_rank['data']['attributes']['rankedGameModeStats']['squad']['damageDealt']
-            rank_kills = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kills']
-            rank_assist = json_rank['data']['attributes']['rankedGameModeStats']['squad']['assists']
-            rank_chicken = json_rank['data']['attributes']['rankedGameModeStats']['squad']['wins']
-            rank_top10s = round(json_rank['data']['attributes']['rankedGameModeStats']['squad']['top10Ratio'] * rank_games)
-
+                rank_games = json_rank['data']['attributes']['rankedGameModeStats']['squad']['roundsPlayed']
+                rank_Dealt = json_rank['data']['attributes']['rankedGameModeStats']['squad']['damageDealt']
+                rank_kills = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kills']
+                rank_assist = json_rank['data']['attributes']['rankedGameModeStats']['squad']['assists']
+                rank_chicken = json_rank['data']['attributes']['rankedGameModeStats']['squad']['wins']
+                rank_top10s = round(json_rank['data']['attributes']['rankedGameModeStats']['squad']['top10Ratio'] * rank_games)
+        
 
             ## 이번시즌 일반 종합 ##
             url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID
