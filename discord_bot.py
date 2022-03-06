@@ -161,6 +161,6 @@ async def stats(ctx, arg1):
     out = Image.alpha_composite(background, txt)
     out.paste(tier_img, (200,30), tier_img)
     
-    await ctx.send(file=out)
+    await ctx.send(out)
     
 bot.run(token)
