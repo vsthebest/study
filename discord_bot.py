@@ -154,9 +154,7 @@ async def stats(ctx, arg1):
 
             url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID+"/ranked"
             req = requests.get(url, headers=header)
-            #json_rank = json.loads(req.text)
-            with open(req.text, 'r')as j:
-                json_rank = json.loads(j.read())
+            json_rank = json.loads(req.text)
 
             if 'squad' in json_rank['data']['attributes']['rankedGameModeStats']:
                 if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
@@ -178,9 +176,7 @@ async def stats(ctx, arg1):
             ## 이번시즌 일반 종합 ##
             url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID
             req = requests.get(url, headers=header)
-            #json_normal = json.loads(req.text)
-            with open(req.text, 'r') as j:
-                json_normal = json.loads(j.read())
+            json_normal = json.loads(req.text)
 
             normal_games = json_normal['data']['attributes']['gameModeStats']['squad']['roundsPlayed']
             normal_dealt = json_normal['data']['attributes']['gameModeStats']['squad']['damageDealt']
