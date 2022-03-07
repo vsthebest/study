@@ -137,12 +137,12 @@ async def stats(ctx, arg1):
         name.append("Daaeeng")
     else:
         next = 0
-    await ctx.send(playerID)
+    
     
     if next == 1:
         for num in range(len(platform)):
-            #json_rank = ""
-            #json_normal = ""
+            json_rank = ""
+            json_normal = ""
             url = "https://api.pubg.com/shards/"+platform[num]+"/seasons"
             header = { "Authorization": os.getenv('AUTHORIZATION'),
                       "Accept": "application/vnd.api+json" }
@@ -156,8 +156,8 @@ async def stats(ctx, arg1):
                     break
 
             url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID+"/ranked"
-            req = requests.get(url, headers=header)
-            json_rank = json.loads(req.text)
+            req2 = requests.get(url, headers=header)
+            json_rank = json.loads(req2.text)
 
             if 'squad' in json_rank['data']['attributes']['rankedGameModeStats']:
                 if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
@@ -178,8 +178,8 @@ async def stats(ctx, arg1):
 
             ## 이번시즌 일반 종합 ##
             url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID
-            req = requests.get(url, headers=header)
-            json_normal = json.loads(req.text)
+            req3 = requests.get(url, headers=header)
+            json_normal = json.loads(req3.text)
 
             normal_games = json_normal['data']['attributes']['gameModeStats']['squad']['roundsPlayed']
             normal_dealt = json_normal['data']['attributes']['gameModeStats']['squad']['damageDealt']
@@ -189,11 +189,18 @@ async def stats(ctx, arg1):
             normal_top10s = json_normal['data']['attributes']['gameModeStats']['squad']['top10s']
 
             total_games = total_games + rank_games + normal_games
-            total_dealt = total_dealt + round((rank_Dealt + normal_dealt) / total_games)
-            total_kills = total_kills + round((rank_kills + normal_kills) / total_games, 1)
-            total_assist = total_assist + round((rank_assist + normal_assist) / total_games, 1)
+            total_dealt = total_dealt + rank_Dealt + normal_dealt
+            total_kills = total_kills + rank_kills + normal_kills
+            total_assist = total_assist + rank_assist + normal_assist
             total_chicken = total_chicken + rank_chicken + normal_chicken
-            total_top10s = total_top10s + round((rank_top10s + normal_top10s) / total_games * 100)
+            total_top10s = total_top10s + rank_top10s + normal_top10s
+            
+            
+        
+        total_dealt = round((total_dealt) / total_games)
+        total_kills = round((total_kills) / total_games, 1)
+        total_assist = round((total_assist) / total_games, 1)
+        total_top10s = round((total_top10s) / total_games * 100)
 
         background = Image.open("back.jpg").convert("RGBA")
         txt = Image.new("RGBA", background.size, (255,255,255,0))
