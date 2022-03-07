@@ -141,13 +141,17 @@ async def stats(ctx, arg1):
     
     if next == 1:
         for num in range(len(platform)):
-            json_rank = ""
-            json_normal = ""
-            url = "https://api.pubg.com/shards/"+platform[num]+"/seasons"
+            url_1 = ""
+            url_2 = ""
+            url_3 = ""
+            #json_rank = ""
+            #json_normal = ""
+            
+            url_1 = "https://api.pubg.com/shards/"+platform[num]+"/seasons"
             header = { "Authorization": os.getenv('AUTHORIZATION'),
                       "Accept": "application/vnd.api+json" }
 
-            req = requests.get(url, headers=header)
+            req = requests.get(url_1, headers=header)
             json_season = json.loads(req.text)
 
             for i in range(len(json_season['data'])):
@@ -155,8 +159,8 @@ async def stats(ctx, arg1):
                     seasonID = json_season['data'][i]['id']
                     break
 
-            url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID+"/ranked"
-            req2 = requests.get(url, headers=header)
+            url_2 = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID+"/ranked"
+            req2 = requests.get(url_2, headers=header)
             json_rank = json.loads(req2.text)
 
             if 'squad' in json_rank['data']['attributes']['rankedGameModeStats']:
@@ -177,8 +181,8 @@ async def stats(ctx, arg1):
         
 
             ## 이번시즌 일반 종합 ##
-            url = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID
-            req3 = requests.get(url, headers=header)
+            url_3 = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID
+            req3 = requests.get(url_3, headers=header)
             json_normal = json.loads(req3.text)
 
             normal_games = json_normal['data']['attributes']['gameModeStats']['squad']['roundsPlayed']
