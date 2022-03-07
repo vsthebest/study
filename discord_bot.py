@@ -137,11 +137,12 @@ async def stats(ctx, arg1):
         name.append("Daaeeng")
     else:
         next = 0
+    await ctx.send(playerID)
     
     if next == 1:
         for num in range(len(platform)):
-            json_rank = ""
-            json_normal = ""
+            #json_rank = ""
+            #json_normal = ""
             url = "https://api.pubg.com/shards/"+platform[num]+"/seasons"
             header = { "Authorization": os.getenv('AUTHORIZATION'),
                       "Accept": "application/vnd.api+json" }
