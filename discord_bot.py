@@ -20,7 +20,10 @@ token = os.getenv('BOT_TOKKEN')
 comment = discord.Game("!명령어 - 명령어확인")
 bot = commands.Bot(command_prefix="!", status=discord.Status.online, activity=comment)
 
-
+header = {
+    "Authorization": os.getenv('AUTHORIZATION'),
+    "Accept": "application/vnd.api+json"
+    }
 
 
 
