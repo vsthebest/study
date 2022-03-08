@@ -217,7 +217,7 @@ async def stats(ctx, arg1, arg2):
 
 
         draw2 = ImageDraw.Draw(txt)
-        draw2.text((270,55), str(point)+"point"+"("+higher+")", font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw2.text((270,55), str(point)+"point"+"("+arg2+")", font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
 
         draw3 = ImageDraw.Draw(txt)
         draw3.text((130, 107), str(round(KDA,1)), font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
