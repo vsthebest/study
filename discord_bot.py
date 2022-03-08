@@ -28,7 +28,9 @@ bot = commands.Bot(command_prefix="!", status=discord.Status.online, activity=co
 ## 명령어 리스트 출력 ##
 @bot.command(aliases=["명령어"])
 async def orders(ctx):
-    await ctx.send("!팀짜기, !team :: 5명이상일때 배그 팀나누기 4/3 or 3/3 or 3/2")
+    await ctx.send("1. !팀짜기, !team :: 5명이상일때 배그 팀나누기 4/3 or 3/3 or 3/2")
+    await ctx.send("2. !스탯 [이름], !stat [이름] :: 카카오+스팀 통합스탯, 티어/KDA 기준은 스팀/카카오 중 높은거")
+    await ctx.send("약 20초 소요")
     
 ################################################################################################
 
@@ -75,11 +77,9 @@ async def team(ctx):
 
 ## 통합스탯, arg1: 이름 ##
 @bot.command(aliases=["스탯"])
-async def stats(ctx, arg1):
-    next = 1
-    platform = ["kakao", "steam"]
-    playerID = []
-    name = []
+async def stats(ctx, arg1, arg2):
+    nex = 1
+    playerID = ""
     point = 0
     
     total_games = 0
@@ -98,113 +98,109 @@ async def stats(ctx, arg1):
     
     tier = ""
     subtier = 0
-    higher = ""
+    KDA = 0.0    
     
-    if arg1 == "은영":
-        playerID.append(os.getenv('EY_KAKAO'))
-        playerID.append(os.getenv('EY_STEAM'))
-        name.append("IDC_Kakabenzema")
-        name.append("Side_Attacker")
-    elif arg1 == "승민" or arg1 == "오잉":
-        playerID.append(os.getenv('SM_KAKAO'))
-        playerID.append(os.getenv('SM_STEAM'))
-        name.append("Oing-Man")
-        name.append("5-ing")
-    elif arg1 == "익현" or arg1 == "익돌":
-        playerID.append(os.getenv('IH_KAKAO'))
-        playerID.append(os.getenv('IH_STEAM'))
-        name.append("Kakao_Man")
-        name.append("with_Heung")
-    elif arg1 == "민수" or arg1 == "만수":
-        playerID.append(os.getenv('MS_KAKAO'))
-        playerID.append(os.getenv('MS_STEAM'))
-        name.append("OneShot_S1897")
-        name.append("Black_Consumer")
-    elif arg1 == "태진" or arg1 == "오크":
-        playerID.append(os.getenv('TJ_KAKAO'))
-        playerID.append(os.getenv('TJ_STEAM'))
-        name.append("Giveme_the_gun")
-        name.append("hexemowgli")
-    elif arg1 == "장훈" or arg1 == "쫄":
-        playerID.append(os.getenv('JH_KAKAO'))
-        playerID.append(os.getenv('JH_STEAM'))
-        name.append("Kakao_JOL")
-        name.append("ZZ0L")
-    elif arg1 == "동혁" or arg1 == "댕":
-        playerID.append(os.getenv('DH_KAKAO'))
-        playerID.append(os.getenv('DH_STEAM'))
-        name.append("ImplW")
-        name.append("Daaeeng")
+    if arg2 == "스팀":
+        arg2 = "steam"
+        if arg1 == "은영":
+            playerID = os.getenv('EY_STEAM')
+
+        elif arg1 == "승민" or arg1 == "오잉":
+            playerID = os.getenv('SM_STEAM')
+
+        elif arg1 == "익현" or arg1 == "익돌":
+            playerID = os.getenv('IH_STEAM')
+
+        elif arg1 == "민수" or arg1 == "만수":
+            playerID = os.getenv('MS_STEAM')
+
+        elif arg1 == "태진" or arg1 == "오크":
+            playerID = os.getenv('TJ_STEAM')
+
+        elif arg1 == "장훈" or arg1 == "쫄":
+            playerID = os.getenv('JH_STEAM')
+
+        elif arg1 == "동혁" or arg1 == "댕":
+              playerID = os.getenv('DH_STEAM')
+
+        else:
+            nex = 0
+            
+    elif arg2 == "카카오":
+        arg2 = "kakao"
+        if arg1 == "은영":
+            playerID = os.getenv('EY_KAKAO')
+
+        elif arg1 == "승민" or arg1 == "오잉":
+            playerID = os.getenv('SM_KAKAO')
+
+        elif arg1 == "익현" or arg1 == "익돌":
+            playerID = os.getenv('IH_KAKAO')
+
+        elif arg1 == "민수" or arg1 == "만수":
+            playerID = os.getenv('MS_KAKAO')
+
+        elif arg1 == "태진" or arg1 == "오크":
+            playerID = os.getenv('TJ_KAKAO')
+
+        elif arg1 == "장훈" or arg1 == "쫄":
+            playerID = os.getenv('JH_KAKAO')
+
+        elif arg1 == "동혁" or arg1 == "댕":
+              playerID = os.getenv('DH_KAKAO')
+
+        else:
+            nex = 0
+        
     else:
-        next = 0
+        nex = 0
     
     
-    if next == 1:
-        for num in range(len(platform)):
-            url_1 = ""
-            url_2 = ""
-            url_3 = ""
-            #json_rank = ""
-            #json_normal = ""
-            
-            url_1 = "https://api.pubg.com/shards/"+platform[num]+"/seasons"
-            header = { "Authorization": os.getenv('AUTHORIZATION'),
-                      "Accept": "application/vnd.api+json" }
+    if nex == 1:
+        seasonID = os.getenv('season_ID')
+        url = "https://api.pubg.com/shards/"+arg2+"/players/"+playerID+"/seasons/"+seasonID+"/ranked"
+        req = requests.get(url, headers=header)
+        json_rank = json.loads(req.text)
 
-            req = requests.get(url_1, headers=header)
-            json_season = json.loads(req.text)
+        if 'squad' in json_rank['data']['attributes']['rankedGameModeStats']:
+            if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
+                tier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['tier']
+                subtier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['subTier']
+                point = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']
+                KDA = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kda']
 
-            for i in range(len(json_season['data'])):
-                if json_season['data'][i]['attributes']['isCurrentSeason'] == True and json_season['data'][i]['attributes']['isOffseason'] == False:
-                    seasonID = json_season['data'][i]['id']
-                    break
-
-            url_2 = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID+"/ranked"
-            req2 = requests.get(url_2, headers=header)
-            json_rank = json.loads(req2.text)
-
-            if 'squad' in json_rank['data']['attributes']['rankedGameModeStats']:
-                if point < json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']:
-                    tier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['tier']
-                    subtier = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentTier']['subTier']
-                    point = json_rank['data']['attributes']['rankedGameModeStats']['squad']['currentRankPoint']
-                    higher = platform[num]
-
-                    KDA = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kda']
-
-                rank_games = json_rank['data']['attributes']['rankedGameModeStats']['squad']['roundsPlayed']
-                rank_Dealt = json_rank['data']['attributes']['rankedGameModeStats']['squad']['damageDealt']
-                rank_kills = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kills']
-                rank_assist = json_rank['data']['attributes']['rankedGameModeStats']['squad']['assists']
-                rank_chicken = json_rank['data']['attributes']['rankedGameModeStats']['squad']['wins']
-                rank_top10s = round(json_rank['data']['attributes']['rankedGameModeStats']['squad']['top10Ratio'] * rank_games)
+            rank_games = json_rank['data']['attributes']['rankedGameModeStats']['squad']['roundsPlayed']
+            rank_Dealt = json_rank['data']['attributes']['rankedGameModeStats']['squad']['damageDealt']
+            rank_kills = json_rank['data']['attributes']['rankedGameModeStats']['squad']['kills']
+            rank_assist = json_rank['data']['attributes']['rankedGameModeStats']['squad']['assists']
+            rank_chicken = json_rank['data']['attributes']['rankedGameModeStats']['squad']['wins']
+            rank_top10s = round(json_rank['data']['attributes']['rankedGameModeStats']['squad']['top10Ratio'] * rank_games)
         
 
-            ## 이번시즌 일반 종합 ##
-            url_3 = "https://api.pubg.com/shards/"+platform[num]+"/players/"+playerID[num]+"/seasons/"+seasonID
-            req3 = requests.get(url_3, headers=header)
-            json_normal = json.loads(req3.text)
+        ## 이번시즌 일반 종합 ##
+        url = "https://api.pubg.com/shards/"+arg2+"/players/"+playerID+"/seasons/"+seasonID
+        req = requests.get(url, headers=header)
+        json_normal = json.loads(req.text)
 
-            normal_games = json_normal['data']['attributes']['gameModeStats']['squad']['roundsPlayed']
-            normal_dealt = json_normal['data']['attributes']['gameModeStats']['squad']['damageDealt']
-            normal_kills = json_normal['data']['attributes']['gameModeStats']['squad']['kills']
-            normal_assist = json_normal['data']['attributes']['gameModeStats']['squad']['assists']
-            normal_chicken = json_normal['data']['attributes']['gameModeStats']['squad']['wins']
-            normal_top10s = json_normal['data']['attributes']['gameModeStats']['squad']['top10s']
+        normal_games = json_normal['data']['attributes']['gameModeStats']['squad']['roundsPlayed']
+        normal_dealt = json_normal['data']['attributes']['gameModeStats']['squad']['damageDealt']
+        normal_kills = json_normal['data']['attributes']['gameModeStats']['squad']['kills']
+        normal_assist = json_normal['data']['attributes']['gameModeStats']['squad']['assists']
+        normal_chicken = json_normal['data']['attributes']['gameModeStats']['squad']['wins']
+        normal_top10s = json_normal['data']['attributes']['gameModeStats']['squad']['top10s']
 
-            total_games = total_games + rank_games + normal_games
-            total_dealt = total_dealt + rank_Dealt + normal_dealt
-            total_kills = total_kills + rank_kills + normal_kills
-            total_assist = total_assist + rank_assist + normal_assist
-            total_chicken = total_chicken + rank_chicken + normal_chicken
-            total_top10s = total_top10s + rank_top10s + normal_top10s
-            
-            
-        
-        total_dealt = round((total_dealt) / total_games)
-        total_kills = round((total_kills) / total_games, 1)
-        total_assist = round((total_assist) / total_games, 1)
-        total_top10s = round((total_top10s) / total_games * 100)
+        total_games = rank_games + normal_games
+        total_dealt = rank_Dealt + normal_dealt
+        total_kills = rank_kills + normal_kills
+        total_assist = rank_assist + normal_assist
+        total_chicken = rank_chicken + normal_chicken
+        total_top10s = rank_top10s + normal_top10s
+
+        if total_games > 0:
+            total_dealt = round((total_dealt) / total_games)
+            total_kills = round((total_kills) / total_games, 1)
+            total_assist = round((total_assist) / total_games, 1)
+            total_top10s = round((total_top10s) / total_games * 100)
 
         background = Image.open("back.jpg").convert("RGBA")
         txt = Image.new("RGBA", background.size, (255,255,255,0))
@@ -212,8 +208,9 @@ async def stats(ctx, arg1):
         draw1 = ImageDraw.Draw(txt)
         draw1.text((220,18), arg1, font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
 
-        tier_img = Image.open(tier+subtier+".png").convert("RGBA")
-        tier_img = tier_img.resize((70,70))
+        if tier != "":
+            tier_img = Image.open(tier+subtier+".png").convert("RGBA")
+            tier_img = tier_img.resize((70,70))
 
 
         draw2 = ImageDraw.Draw(txt)
@@ -238,7 +235,8 @@ async def stats(ctx, arg1):
         draw8.text((420, 202), str(total_assist)+"회", font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
 
         out = Image.alpha_composite(background, txt)
-        out.paste(tier_img, (200,30), tier_img)
+        if tier != "":
+            out.paste(tier_img, (200,30), tier_img)
 
         with BytesIO() as image_binary:
             out.save(image_binary, "png")
