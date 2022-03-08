@@ -40,7 +40,7 @@ async def orders(ctx):
 ## 배그 팀짜기 ##
 @bot.command(aliases=["팀짜기"])
 async def team(ctx):
-    channel = bot.get_channel(946638295302029326)
+    channel = bot.get_channel(569069485529628705)
     curMembers = []
     team_one = []
     team_two = []
