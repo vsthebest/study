@@ -84,6 +84,7 @@ async def team(ctx):
 async def stats(ctx, arg1, arg2):
     nex = 1
     playerID = ""
+    name = ""
     point = 0
     
     total_games = 0
@@ -108,24 +109,31 @@ async def stats(ctx, arg1, arg2):
         arg2 = "steam"
         if arg1 == "은영":
             playerID = os.getenv('EY_STEAM')
+            name = os.getenv('EY_STEAM_ID')
 
         elif arg1 == "승민" or arg1 == "오잉":
             playerID = os.getenv('SM_STEAM')
+            name = os.getenv('SM_STEAM_ID')
 
         elif arg1 == "익현" or arg1 == "익돌":
             playerID = os.getenv('IH_STEAM')
+            name = os.getenv('IH_STEAM_ID')
 
         elif arg1 == "민수" or arg1 == "만수":
             playerID = os.getenv('MS_STEAM')
+            name = os.getenv('MS_STEAM_ID')
 
         elif arg1 == "태진" or arg1 == "오크":
             playerID = os.getenv('TJ_STEAM')
+            name = os.getenv('TJ_STEAM_ID')
 
         elif arg1 == "장훈" or arg1 == "쫄":
             playerID = os.getenv('JH_STEAM')
+            name = os.getenv('JH_STEAM_ID')
 
         elif arg1 == "동혁" or arg1 == "댕":
               playerID = os.getenv('DH_STEAM')
+                name = os.getenv('DH_STEAM_ID')
 
         else:
             nex = 0
@@ -134,24 +142,31 @@ async def stats(ctx, arg1, arg2):
         arg2 = "kakao"
         if arg1 == "은영":
             playerID = os.getenv('EY_KAKAO')
+            name = os.getenv('EY_KAKAO_ID')
 
         elif arg1 == "승민" or arg1 == "오잉":
             playerID = os.getenv('SM_KAKAO')
+            name = os.getenv('SM_KAKAO_ID')
 
         elif arg1 == "익현" or arg1 == "익돌":
             playerID = os.getenv('IH_KAKAO')
+            name = os.getenv('IH_KAKAO_ID')
 
         elif arg1 == "민수" or arg1 == "만수":
             playerID = os.getenv('MS_KAKAO')
+            name = os.getenv('MS_KAKAO_ID')
 
         elif arg1 == "태진" or arg1 == "오크":
             playerID = os.getenv('TJ_KAKAO')
+            name = os.getenv('TJ_KAKAO_ID')
 
         elif arg1 == "장훈" or arg1 == "쫄":
             playerID = os.getenv('JH_KAKAO')
+            name = os.getenv('JH_KAKAO_ID')
 
         elif arg1 == "동혁" or arg1 == "댕":
               playerID = os.getenv('DH_KAKAO')
+                name = os.getenv('DH_KAKAO_ID')
 
         else:
             nex = 0
@@ -210,7 +225,7 @@ async def stats(ctx, arg1, arg2):
         txt = Image.new("RGBA", background.size, (255,255,255,0))
 
         draw1 = ImageDraw.Draw(txt)
-        draw1.text((220,18), arg1, font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw1.text((220,18), name+"("+arg1+")", font=ImageFont.truetype("HMKMMAG.TTF", 18), fill=(255,255,255))
 
         if tier != "":
             tier_img = Image.open(tier+subtier+".png").convert("RGBA")
@@ -218,25 +233,25 @@ async def stats(ctx, arg1, arg2):
 
 
         draw2 = ImageDraw.Draw(txt)
-        draw2.text((270,55), str(point)+"point"+"("+arg2+")", font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw2.text((270,55), str(point)+"point"+"("+arg2+")", font=ImageFont.truetype("HMKMMAG.TTF", 18), fill=(255,255,255))
 
         draw3 = ImageDraw.Draw(txt)
-        draw3.text((130, 107), str(round(KDA,1)), font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw3.text((130, 107), str(round(KDA,1)), font=ImageFont.truetype("HMKMMAG.TTF", 18), fill=(255,255,255))
 
         draw4 = ImageDraw.Draw(txt)
-        draw4.text((100, 160), str(total_dealt), font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw4.text((100, 160), str(total_dealt), font=ImageFont.truetype("HMKMMAG.TTF", 18), fill=(255,255,255))
 
         draw5 = ImageDraw.Draw(txt)
-        draw5.text((110, 215), str(total_top10s)+"%", font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw5.text((110, 215), str(total_top10s)+"%", font=ImageFont.truetype("HMKMMAG.TTF", 18), fill=(255,255,255))
 
         draw6 = ImageDraw.Draw(txt)
-        draw6.text((360, 120), str(total_chicken)+"번", font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw6.text((360, 120), str(total_chicken)+"번", font=ImageFont.truetype("HMKMMAG.TTF", 18), fill=(255,255,255))
 
         draw7 = ImageDraw.Draw(txt)
-        draw7.text((375, 162), str(total_kills)+"회", font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw7.text((375, 162), str(total_kills)+"회", font=ImageFont.truetype("HMKMMAG.TTF", 18), fill=(255,255,255))
 
         draw8 = ImageDraw.Draw(txt)
-        draw8.text((420, 202), str(total_assist)+"회", font=ImageFont.truetype("HMKMMAG.TTF", 16), fill=(255,255,255))
+        draw8.text((420, 202), str(total_assist)+"회", font=ImageFont.truetype("HMKMMAG.TTF", 18), fill=(255,255,255))
 
         out = Image.alpha_composite(background, txt)
         if tier != "":
