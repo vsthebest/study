@@ -132,8 +132,8 @@ async def stats(ctx, arg1, arg2):
             name = os.getenv('JH_STEAM_ID')
 
         elif arg1 == "동혁" or arg1 == "댕":
-              playerID = os.getenv('DH_STEAM')
-                name = os.getenv('DH_STEAM_ID')
+            playerID = os.getenv('DH_STEAM')
+            name = os.getenv('DH_STEAM_ID')
 
         else:
             nex = 0
@@ -165,8 +165,8 @@ async def stats(ctx, arg1, arg2):
             name = os.getenv('JH_KAKAO_ID')
 
         elif arg1 == "동혁" or arg1 == "댕":
-              playerID = os.getenv('DH_KAKAO')
-                name = os.getenv('DH_KAKAO_ID')
+            playerID = os.getenv('DH_KAKAO')
+            name = os.getenv('DH_KAKAO_ID')
 
         else:
             nex = 0
